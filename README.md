@@ -1,7 +1,7 @@
-# suppylib - A WhatsApp bot framework by automating WhatsApp Web
+# suppylib - A WhatsApp bot framework automating WhatsApp Web
 
-suppylib is a small Python library I wrote, to make is possible to automate WhatsApp using Selenium and Google Chrome.
-Web interface.
+suppylib is a small Python library I wrote, to make it possible to automate 
+the WhatsApp Web interface using Selenium and Google Chrome.
 
 ## Installation:
 ```
