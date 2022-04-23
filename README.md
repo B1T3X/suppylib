@@ -147,4 +147,7 @@ Example config file:
 }
 ```
 
-
+## Things left to do (this is where you may come in...):
+* Better TCP protocolization, and actual use of TCP
+* Solve some bugs and crashes
+* Add support for better configuration options (such as different browsers)

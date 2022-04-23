@@ -169,9 +169,9 @@ def sendMessage(message):
             logging.logMessageSent(getCurrentConversation()[0], message, isgroup=isgroup)
             print("Message sent!")
 
-def sendMessageTo(contact, message):
+def sendMessageTo(conversation, message):
     """
     Navigates to specified contact and sends message
     """
-    openConversationWith(contact)
+    openConversationWith(conversation)
     sendMessage(message)

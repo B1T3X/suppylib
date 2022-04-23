@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException, TimeoutException
+from selenium.common.exceptions import NoSuchElementException, TimeoutException, ElementClickInterceptedException
 from . import messaging
 
 
@@ -21,7 +21,7 @@ def openConversationWith(contact_name):
     try:
         convo = next((conversation for conversation in messaging.side_pane.find_elements_by_xpath('//div[starts-with(@style, "z-index")]') if conversation.text.split("\n")[0] == contact_name))
         convo.click()
-    except StopIteration:
+    except (StopIteration, ElementClickInterceptedException):
         search_box = side_pane.find_element_by_tag_name("label").find_element_by_tag_name("div")
         search_box.click()
         search_box_to_fill = side_pane.find_element_by_tag_name("label").find_element_by_tag_name("div").find_element_by_xpath('.//div[@data-tab="3"][@contenteditable="true"]')
