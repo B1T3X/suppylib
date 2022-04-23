@@ -159,3 +159,5 @@ Example config file:
 * Better TCP protocolization, and actual use of TCP
 * Solve some bugs and crashes
 * Add support for better configuration options (such as different browsers)
+* Add support for multimedia (images, videos, voice recordings)
+* Add support for replying to a specific message (and receiving replies)
