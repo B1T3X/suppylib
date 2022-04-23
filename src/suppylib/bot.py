@@ -85,11 +85,11 @@ class SuppyBot:
     def get_current_conversation(self):
         return self._current_conversation
 
-    def read_new_messages(self, conversation=None, tail=None):
-        return suppy_messaging.readNewMessages(conversation=conversation, tail=tail)
+    def read_new_messages(self, conversation=None, tail=None, isgroup=False):
+        return suppy_messaging.readNewMessages(conversation=conversation, tail=tail, isgroup=isgroup)
 
     def read_own_messages(self, conversation=None, tail=None, isgroup=False):
-        return suppy_messaging.readMyMessages(conversation=conversation, tail=tail, isgroup=isgroup)
+        return suppy_messaging.readMyMessages(conversation=conversation, tail=tail)
 
     def go_home(self):
         suppy_navigation.goHome()
