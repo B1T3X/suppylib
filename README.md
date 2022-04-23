@@ -6,6 +6,8 @@ the WhatsApp Web interface using Selenium and Google Chrome.
 As cool as this project is remember the following:
 * Spam isn't cool
 * Facebook, as you may know, does not endorse these kinds of projects
+* Therefore, this may break at any given moment and I may not have the time or
+energy to fix it
 * I am not responsible for you abusing this and/or getting banned
 * Zucc please don't sue me bro
 
