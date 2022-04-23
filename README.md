@@ -3,6 +3,12 @@
 suppylib is a small Python library I wrote, to make it possible to automate 
 the WhatsApp Web interface using Selenium and Google Chrome.
 
+As cool as this project is remember the following:
+* Spam isn't cool
+* Facebook, as you may know, does not endorse these kinds of projects
+* I am not responsible for you abusing this and/or getting banned
+* Zucc please don't sue me bro
+
 ## Installation:
 ```
 pip install suppylib
