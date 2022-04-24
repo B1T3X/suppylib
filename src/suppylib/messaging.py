@@ -13,27 +13,33 @@ from . import navigation, logging
 #from suppy import *
 
 def checkForNewMessages():
-    """
-    Checks visible conversations on the side pane for new messages and returns a dictionary:
+	"""
+	Checks visible conversations on the side pane for new messages and returns a dictionary:
 
-    Parameters:
-        None
+	Parameters:
+	    None
 
-    Returns:
-        Dictionary:
-            {<Conversation Name>: [<Amount of New Messages>, <Is Group>]}
-    """
-    last_conversation_containers = side_pane.find_elements_by_xpath('.//div[starts-with(@style, "z-index")]')
-    last_conversations = [conversation.text.split("\n") for conversation in last_conversation_containers]
-    conversations_with_new_messages = dict()
-    for conversation in last_conversations:
-        if 3 < len(conversation) < 7 and re.match("^[1-9]$",conversation[-1]):
-            if conversation[3] == ": ":
-                is_group = True
-            else:
-                is_group = False
-            conversations_with_new_messages[conversation[0]] = [int(conversation[-1]), is_group]
-    return conversations_with_new_messages
+	Returns:
+	    Dictionary:
+	        {<Conversation Name>: [<Amount of New Messages>, <Is Group>]}
+	"""
+	last_conversation_containers = side_pane.find_elements(by=By.XPATH, value='.//div[starts-with(@style, "z-index")]')
+	#last_conversations = [conversation.text.split("\n") for conversation in last_conversation_containers]
+	conversations_with_new_messages = dict()
+	for conversation in last_conversation_containers:
+		try:
+			conversation.find_element(by=By.XPATH, value=".//span[contains(@aria-label, ' unread message')]")
+		#if 3 < len(conversation) < 7 and re.match("^[1-9]$",conversation[-1]):
+			conversation_text = conversation.text.split("\n")
+			if conversation_text[3] == ": ":
+				is_group = True
+			else:
+				is_group = False
+			conversations_with_new_messages[conversation_text[0]] = [int(conversation_text[-1]), is_group]
+		except Exception as e:
+			pass
+
+	return conversations_with_new_messages
 
 def readMyMessages(conversation=None, tail=None):
     """
@@ -54,7 +60,7 @@ def readMyMessages(conversation=None, tail=None):
     if conversation != None:
         openConversationWith(conversation)
     main_pane = browser.find_element_by_id("main")
-    my_messages = [message_block for message_block in main_pane.find_elements_by_xpath('.//div[contains(@class,"message-out")]')]
+    my_messages = [message_block for message_block in main_pane.find_elements(by=By.XPATH,value='.//div[contains(@class,"message-out")]')]
     if tail:
         my_messages = my_messages[len(my_messages)-tail:]
     for message in my_messages:
@@ -94,7 +100,7 @@ def readNewMessages(conversation=None, tail=None, isgroup=False):
     if conversation != None:
         openConversationWith(conversation)
     main_pane = browser.find_element_by_id("main")
-    new_messages = [message_block for message_block in main_pane.find_elements_by_xpath('.//div[contains(@class,"message-in")]')]
+    new_messages = [message_block for message_block in main_pane.find_elements(by=By.XPATH, value='.//div[contains(@class,"message-in")]')]
     if tail:
         new_messages = new_messages[len(new_messages)-tail:]
     for message in new_messages:
@@ -107,7 +113,7 @@ def readNewMessages(conversation=None, tail=None, isgroup=False):
             # Check if user who isn't saved as a contact has a nickname, if so, choose it as the name
             if re.match(r"^\+[0-9]+\s\(?[0-9]+\)?(\s|\-)?[0-9]+(\s|\-)?[0-9]+", message_textual_fields[0]):
                 try:
-                    message.find_element_by_xpath('.//span[text()="' + message_textual_fields[1] + '" and @dir="auto"]')
+                    message.find_element(by=By.XPATH, value='.//span[text()="' + message_textual_fields[1] + '" and @dir="auto"]')
                     # This line is used to get the nickname from an unsaved contact's phone number, but that's probably a bad idea
                     #message_textual_fields.remove(message_textual_fields[0])
                     # I changed it to choose the number instead of the nickname
@@ -115,13 +121,13 @@ def readNewMessages(conversation=None, tail=None, isgroup=False):
                 except NoSuchElementException:
                     pass
             try:
-                message.find_element_by_xpath('.//div[contains(@class, " color-")]')
+                message.find_element(by=By.XPATH, value='.//div[contains(@class, " color-")]')
                 message_to_append = (lambda lst: (lst[0], ','.join(lst[1:-1]), lst[-1]))(message_textual_fields)
             except NoSuchElementException:
                 try:
                     message_to_append = (lambda lst1, lst2: (lst1[-1][0], ','.join(lst2[:-1]), lst2[-1]))(messages_to_return, message_textual_fields)
                 except IndexError:
-                    message_to_append = (lambda name, lst2: (name, ','.join(lst2[:-1]), lst2[-1]))(main_pane.find_elements_by_xpath('.//div[contains(@class," color-")]')[-1].text, message_textual_fields)
+                    message_to_append = (lambda name, lst2: (name, ','.join(lst2[:-1]), lst2[-1]))(main_pane.find_elements(by=By.XPATH, value='.//div[contains(@class," color-")]')[-1].text, message_textual_fields)
         else:
             message_to_append = (lambda lst: (','.join(lst[:-1]), lst[-1]))(message_textual_fields)
         messages_to_return.append(message_to_append)
@@ -143,12 +149,12 @@ def sendMessage(message):
         pass
     else:
         try:
-            browser.find_element_by_xpath('//div[contains(@class, " color-")]')
+            browser.find_element(by=By.XPATH, value='//div[contains(@class, " color-")]')
         except NoSuchElementException:
             isgroup = False
         else:
             isgroup = True
-        message_field = browser.find_element_by_xpath('.//div[@spellcheck="true"]')
+        message_field = browser.find_element(by=By.XPATH, value='.//div[@spellcheck="true"]')
         if isinstance(message, list):
             ActionChains(browser).click(message_field).perform()
             for line in message:
