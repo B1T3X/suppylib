@@ -19,12 +19,12 @@ def openConversationWith(contact_name):
         None
     """
     try:
-        convo = next((conversation for conversation in messaging.side_pane.find_elements_by_xpath('//div[starts-with(@style, "z-index")]') if conversation.text.split("\n")[0] == contact_name))
+        convo = next((conversation for conversation in messaging.side_pane.find_elements(by=By.XPATH, value='//div[starts-with(@style, "z-index")]') if conversation.text.split("\n")[0] == contact_name))
         convo.click()
     except (StopIteration, ElementClickInterceptedException):
-        search_box = side_pane.find_element_by_tag_name("label").find_element_by_tag_name("div")
+        search_box = side_pane.find_element(by=By.TAG_NAME, value="label").find_element(by=By.TAG_NAME, value="div")
         search_box.click()
-        search_box_to_fill = side_pane.find_element_by_tag_name("label").find_element_by_tag_name("div").find_element_by_xpath('.//div[@data-tab="3"][@contenteditable="true"]')
+        search_box_to_fill = side_pane.find_element(by=By.TAG_NAME, value="label").find_element(by=By.TAG_NAME, value="div").find_element(by=By.XPATH, value='.//div[@data-tab="3"][@contenteditable="true"]')
         search_box_to_fill.send_keys(contact_name)
         contact_conversation_loaded = EC.presence_of_element_located((By.XPATH,'//span[@title="' + contact_name + '"]'))
         try:
@@ -45,7 +45,7 @@ def getCurrentConversation():
             For groups: ['GroupName', 'Member1,Member2[...membern]']
             For private chats: ['Contact Name/Number','Last seen (If applicable)]
     """
-    return browser.find_element_by_id("main").find_element_by_tag_name("header").text.split("\n")
+    return browser.find_element(by=By.ID, value="main").find_element(by=By.TAG_NAME, value="header").text.split("\n")
 
 
 

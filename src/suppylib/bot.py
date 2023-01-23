@@ -13,7 +13,6 @@ import json, time, types, base64
 class SuppyBot:
     def __init__(self, config_path):
         self._current_conversation = None
-        
         with open(config_path, "rb") as json_config_file:
             self._config_data = json.load(json_config_file)
 
@@ -24,7 +23,6 @@ class SuppyBot:
 
         self._browser = webdriver.Chrome(options=options)
         self._browser.get("https://web.whatsapp.com")
-        self.export_screenshot("status.jpg")
         self.wait_for_login()
         self._side_pane = self._browser.find_element(by=By.ID, value="side")
         self.update_submodules()
@@ -35,23 +33,23 @@ class SuppyBot:
             module.side_pane = self._side_pane
             module.browser = self._browser
             module.config_data = self._config_data
- 
 
     def wait_for_login(self):
         """
         Waits for WhatsApp to login
         """
-        time.sleep(5)
-        whatsapp_loaded = EC.presence_of_element_located((By.XPATH,'//div[text()="End-to-end encrypted"]'))
+        time.sleep(10)
+        whatsapp_loaded = EC.presence_of_element_located((By.ID, "side"))
         while True:
             try:
                 WebDriverWait(self._browser, 2).until(whatsapp_loaded)
             except TimeoutException:
                 print("WhatsApp hasn't loaded yet")
-                time.sleep(7)
+                self.export_screenshot("status.jpg")
+                time.sleep(2)
             else:
                 print("WhatsApp loaded successfully")
-                time.sleep(15)
+                time.sleep(1)
                 break
         return
 
