@@ -45,7 +45,7 @@ def getCurrentConversation():
             For groups: ['GroupName', 'Member1,Member2[...membern]']
             For private chats: ['Contact Name/Number','Last seen (If applicable)]
     """
-    return browser.find_element_by_id("main").find_element(by=By.TAG_NAME, value="header").text.split("\n")
+    return browser.find_element(by=By.ID, value="main").find_element(by=By.TAG_NAME, value="header").text.split("\n")
 
 
 
